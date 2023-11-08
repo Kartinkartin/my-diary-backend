@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import Post from "../models/post";
-import postDecorator from "decorators/postDecorator";
-import DefaultError from "errors/500-default-err";
-import NotFoundError from "errors/404-not-found-err";
-import UncorrectDataError from "errors/400-uncorrect-data";
+import postDecorator from "../decorators/postDecorator";
+import DefaultError from "../errors/500-default-err";
+import NotFoundError from "../errors/404-not-found-err";
+import UncorrectDataError from "../errors/400-uncorrect-data";
 
 export const getPosts = (req: Request, res: Response, next: NextFunction) =>
   Post.find({})
@@ -36,7 +36,6 @@ export const createPost = (req: Request, res: Response) =>
   Post.create({
     title: req.body.title,
     text: req.body.text,
-    date: req.body.date,
   })
-    .then((post) => res.send(post))
+    .then((post) => res.send(postDecorator(post)))
     .catch((err) => res.status(400).send(err));

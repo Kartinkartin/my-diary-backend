@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 export interface IPost {
   title: string;
   text: string;
-  date: Date;
+  createdAt?: Date,
 }
 
 const postSchema = new mongoose.Schema<IPost>({
@@ -19,9 +19,10 @@ const postSchema = new mongoose.Schema<IPost>({
     minlength: 2,
     maxlength: 2000,
   },
-  date: {
+  createdAt: {
     type: Date,
-  }
+    default: Date.now(),
+  },
 });
 
 export default mongoose.model<IPost>('post', postSchema);
