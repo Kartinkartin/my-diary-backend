@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import cors from 'cors';
 import mongoose from 'mongoose';
 import postsRouter from "./routes/posts";
 
@@ -6,6 +7,8 @@ import postsRouter from "./routes/posts";
 const { PORT = 3000 } = process.env;
 
 const app = express();
+app.use(cors());
+app.options('*', cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
