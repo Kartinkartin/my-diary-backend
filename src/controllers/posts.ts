@@ -5,12 +5,22 @@ import DefaultError from "../errors/500-default-err";
 import NotFoundError from "../errors/404-not-found-err";
 import UncorrectDataError from "../errors/400-uncorrect-data";
 
-export const getPosts = (req: Request, res: Response, next: NextFunction) =>
-  Post.find({})
+export const getPosts = (req: Request, res: Response, next: NextFunction) => {
+  Post.find({}).sort({createdAt: 1})
     .then((posts) => {
-      res.send({ data: posts.map(postDecorator) });
+      res.send([...posts.map(postDecorator)]);
     })
     .catch(() => next(new DefaultError("Произошла ошибка")));
+}
+
+export const getPostsSortedBack = (req: Request, res: Response, next: NextFunction) => {
+  Post.find({}).sort({createdAt: -1})
+    .then((posts) => {
+      res.send([...posts.map(postDecorator)]);
+    })
+    .catch(() => next(new DefaultError("Произошла ошибка")));
+}
+
 
 export const findPost = (req: Request, res: Response, next: NextFunction) => {
   const id = String(req.params.id);
@@ -36,6 +46,7 @@ export const createPost = (req: Request, res: Response) =>
   Post.create({
     title: req.body.title,
     text: req.body.text,
+    createdAt: req.body.date,
   })
     .then((post) => res.send(postDecorator(post)))
     .catch((err) => res.status(400).send(err));
