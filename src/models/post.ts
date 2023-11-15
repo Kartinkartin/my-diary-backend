@@ -1,9 +1,11 @@
-import mongoose from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
 
 export interface IPost {
   title: string;
   text: string;
   createdAt?: Date,
+  important?: boolean,
+  _id: ObjectId,
 }
 
 const postSchema = new mongoose.Schema<IPost>({
@@ -22,6 +24,10 @@ const postSchema = new mongoose.Schema<IPost>({
   createdAt: {
     type: Date,
     default: Date.now(),
+  },
+  important: {
+    type: Boolean,
+    default: false,
   },
 });
 
